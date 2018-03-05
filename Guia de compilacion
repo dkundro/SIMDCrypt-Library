@@ -1,0 +1,50 @@
+Estructura:
+
+Con el objetivo de plantear un esquema de organización claro, separando código, archivos objeto, 
+librería y módulos de testing, se planteó la siguiente estructura para el directorio:
+
+SIMDCRYPTLIB/ (directorio principal)
+	-SRC/AES/
+	    .
+	    .
+	    .
+	    /SHA3/
+	-OBJECTS/
+	-LIBRARY/
+	-TEST/.../
+
+En SRC se encuentra el código fuente de cada algoritmo por separado.
+
+En OBJECTS se encuentran todos los archivos .o correspondientes a cada algoritmo luego de su 
+compilación.
+
+En LIBRARY se encuentra el archivo .a correspondiente a la librería final junto con su
+correspondiente header .h.
+
+En TEST se encuentran todos los programas auxiliares (junto a sus respectivos códigos fuente) 
+utilizados para testear el funcionamiento de la librería.
+
+Compilación:
+	
+Para compilar la librería basta con utilizar el comando make sobre el makefile del directorio
+principal (SIMDCRYPTLIB).
+Este makefile actúa como un "makefile maestro", realizando los siguientes pasos en orden:
+	1) LLama al makefile contenido dentro de la carpeta SRC. Este makefile, a su vez, invoca 
+		al makefile contenido dentro de la carpeta de cada algoritmo. Los makefiles de 
+		cada algoritmo se encargan de compilar el archivo .o correspondiente al código C y
+		el archivo .o correspondiente al código ASM y, una vez compilados, los guarda
+		en el directorio OBJECTS/ de la carpeta principal.
+	2) En este punto se encuentran en OBJECTS/ todos los archivos .o correspondientes a los
+		algoritmos. Luego, llama al makefile contenido en la carpeta OBJECTS/. Este
+		makefile es el encargado de juntar a todos los archivos .o contenidos en la
+		carpeta, dando como resultado la libreria final.
+		Este paso lo realiza con el comando: "ar -rcs ../LIBRARY/libsimdcrypt.a *.o".
+		Finalmente, la librería final es enviada a la carpeta LIBRARY/ del directorio
+		principal y, simultáneamente, a la carpeta TEST/Codigo/generadorOutputC. 
+	3) LLama al makefile contenido en "../TEST/Codigo/generateOutputC/" que será el encargado
+		de compilar el programa auxiliar que será utilizado para testear la librería.
+		Este programa es guardado en la carpeta TEST/ con el fin de ser utilizado 
+		fácilmente.
+
+Las instrucciones para realizar un test automatico de la librería se encuentran en la 
+carpeta: TEST/.

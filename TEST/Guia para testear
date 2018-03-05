@@ -1,0 +1,51 @@
+Estructura:
+
+En este directorio se encuentran las siguientes carpetas:
+
+Código/: En esta carpeta se encuentra el código correspondiente a todos los programas utilizados
+	para realizar el testeo.
+
+Input/: En esta carpeta se guardan los casos de test con los cuales se probarán los algoritmos.
+
+Output-C/: En esta carpeta se guardan los resultados de los casos de test producidos por los 
+	algoritmos de la librería SIMDCRYPT.
+
+Output-JAVA/: En esta carpeta se guardan los resultados de los casos de test producidos por los
+	algoritmos nativos de JAVA y la librería BouncyCastle.
+
+
+
+Test:
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+Antes de poder realizar el test, es necesario ejecutar el makefile contenido en el directorio
+principal (SIMDCRYPTLIB/), con el fin de generar la librería y compilar el programa que será 
+utilizado durante el testeo.
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Para la ejecución de un testeo completo (contrastando los valores obtenidos por la librería SIMDCRYPT 
+contra los obtenidos por las librerías de JAVA) basta con ejecutar el script de bash "test.sh" 
+contenido en la carpeta TEST/.
+
+El script lleva a cabo automáticamente los siguientes pasos:
+
+1) genera los casos de test correspondientes a cada algoritmo utilizando el .jar "testGenerator". 
+Este programa recibe como input la cantidad de casos a generar para cada algoritmo y los guarda en la 
+carpeta INPUT/. Esta cantidad puede ser modificada en el script.
+
+2) toma los casos de test generados en el paso 1 y, en base a ellos, guarda el resultado
+en la carpeta Output-JAVA/. Para realizar este paso utiliza el .jar "generateOutputJava".
+Estos son los resultados oficiales contra los cuales se contrastará el resultado de la 
+implementación propia.
+
+3) toma los casos de test generados en el paso 1 y, en base a ellos, guarda el resultado
+en la carpeta Output-C/. Para realizar este paso utiliza el programa "generateOutputC".
+Estos son los resultados obtenidos utilizando la implementación de la librería SIMDCRYPT.
+
+4) contrasta los resultados de ambas implementaciones (contenidos en Output-C/ y 
+output-JAVA) y, en caso de haber una diferencia en algún caso de test puntual, la informa. 
+En caso de pasar los tests correctamente, lo informa mediante el mensaje: "NOMBRE_ALGORITMO Ok".
+Este paso es llevado a cabo utilizando el .jar "checkFilesEqual".
+
+Todos los programas auxiliares utilizados por el script están contenidos dentro de TEST/.
